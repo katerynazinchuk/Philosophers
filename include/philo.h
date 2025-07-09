@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:40 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/09 14:27:43 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/09 15:34:30 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 
 # include <stdio.h>
 # include <unistd.h>
+#include <pthread.h>
 
 #endif
