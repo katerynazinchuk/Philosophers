@@ -7,7 +7,7 @@ SRC_DIR := src
 BUILD_DIR := obj
 INCLUDE := include
 
-SRC := main.c src/utils.c src/threads.c
+SRC := main.c src/utils.c src/threads.c src/init_structs.c
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 all: $(NAME)
@@ -28,7 +28,6 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@$(MAKE) -C fclean
 
 re: fclean all
 

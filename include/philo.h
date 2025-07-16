@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:40 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/15 15:05:38 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/16 17:06:07 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,33 +18,34 @@
 # include <unistd.h>
 # include <pthread.h>
 
-typedef struct s_config
+typedef struct s_input
 {
 	int	philosophers;
+	int	time_to_die;
+	int	time_to_eat;
+	int	time_to_sleep;
+	int	number_of_meals;
+	int start_time;
+	pthread_mutex_t forks[200]; // array of mutexes for forks
 
-}	t_configs;
+}	t_input;
 
 typedef struct s_philo
 {
-	pthread_t		id;
-	pthread_mutex_t	mutex;
-	int end_cycle;
-
+	pthread_t		t_id;
+	int				ph_id;
+	t_input			*input;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	int				meals_finished;
 }	t_philo;
 	
-int	check_input(int argc, char **str);
+int		check_input(int argc, char **str);
+int		init_input_struct(t_input *input, int argc, char **argv);
+void	init_philo_struct(t_philo *philo, t_input *input, int id);
+int		ft_atoi(const char *str);
 
 
 #endif
 
 
-//6 400 100 100 7 - full input
-//limit is not more that 200 philosophers
-
-//left fork is the fork with the same index and right fork is the fork with index n + 1
-// left fork = N
-// right fork = (N + 1) % number of philosophers;
-
-
-// even number take first left
-// unever take first right

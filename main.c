@@ -6,41 +6,77 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:43 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/15 15:13:42 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/16 17:15:52 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-// printf("invalid input");
 
-void *pointer_func()
-{	
-	printf("HELLO from threads\n");
-	return (NULL);
-}
-
-int main (int argc, char **argv)
+int main(int argc, char **argv)
 {
+	int id;
+	t_input input;
+	t_philo philo[200];
+
+	id = 0;
 	if(!check_input(argc, argv))
 		return (0);
-	pthread_t id1;
-	if (pthread_create(&id1, NULL, &pointer_func, NULL))// last NULL can be replaced with any data pointer that thread should know
-		return (1);
-	if (pthread_join(id1, NULL))// wait until the specific thread finishes its work
-		return (2);
+	//
+	init_input_struct(&input, argc, argv);
+	while(id < input.philosophers)
+	{
+		init_philo_struct(&philo[id], &input, id);
+		id++;
+	}
+	id = 0;
+	while (id < input.philosophers)
+	{
+		
+		if (pthread_create(&philo[id].t_id, NULL, &pointer_func, &philo[id]))
+			return (1);
+		id++;
+	}
+	id = 0;
+	while(id < input.philosophers)
+	{
+		if (pthread_join(philo[id].t_id, NULL))
+			return (2);
+		id++;
+	}
 	return (0);
 }
 
+void *pointer_func(void *data)//one pointer argument allowed by function signature
+{	
+	t_philo *philo = (t_philo *)data;
+	//usleep(start_time - current_time)//log calculetion start from poit start_time
+	while(1)
+	{
+		philo_take_fork();
+		philo_eat();
+		philo_sleep();
+		philo_think();
+		philo_die();
+		// pthread_mutex_lock(&philo[id]->input->forks[id]);
+		// pthread_mutex_unlock(&mutex);
+		printf("HELLO from threads - %d\n", philo->ph_id);
+	}
+	return (philo);
+}
 
+//identify currect time when the thread starts
 
-// pthread_mutex_t mutex; //each fork is a mutex(lock)
-// pthread_mutex_init(&mutex, NULL);
-// //can add as many variables as needed between this two functions to protect them from the data racing
-// pthread_mutex_lock(&mutex);
-// printf("Mutex locked!\n");
-// pthread_mutex_unlock(&mutex);
-// pthread_mutex_destroy(&mutex);//destroy mutex everytime after using it
+void print_log(int start_time, int id, char *str)//posibly add arg for time
+{
+	
 
-// unsleep(time);//in mls
+}
+// timestamp_in_ms X has taken a fork
+// timestamp_in_ms X is eating
+// timestamp_in_ms X is sleeping
+// timestamp_in_ms X is thinking
+// timestamp_in_ms X died
 
-// printf("200 3 has taken a fork");//example
+//each state of the automat is a function.
+//while loop is the engine for the states.
+// each function return the state wich next function absorb.
