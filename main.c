@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:43 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/16 17:15:52 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:32:31 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int main(int argc, char **argv)
 	id = 0;
 	while (id < input.philosophers)
 	{
-		
 		if (pthread_create(&philo[id].t_id, NULL, &pointer_func, &philo[id]))
 			return (1);
 		id++;

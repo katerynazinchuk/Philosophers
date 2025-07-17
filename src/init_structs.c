@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:39:07 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/16 17:16:00 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/17 17:27:37 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,16 @@ int	init_input_struct(t_input *input, int argc, char **argv)
 		}
 		i++;
 	}
-	input->start_time = find_start_time();
+	input->start_time = find_start_time() + 200;
 	return (0);
 }
 
-int find_start_time(int offset)
+long find_start_time(void)
 {
-	int start_time;
+	struct timeval	ct;
 
-	start_time = gettimeofday() + offset;
-	return (start_time);
+	gettimeofday(&ct, NULL);
+	return ((ct.tv_sec * 1000) + (ct.tv_usec / 1000));
 }
 
 void	destroy_input_struct(t_input *input)
