@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:47 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/18 14:18:52 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:36:38 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ void	philo_put_fork(t_philo *philo)
 	}
 }
 
+long last_meal_taken(t_philo *philo)
+{
+	philo->time_last_meal
+	
+}
+
 void	philo_sleep(t_philo *philo)
 {
 
@@ -58,8 +64,7 @@ void	philo_sleep(t_philo *philo)
 if (time_to_die < 0)
 		time_to_die = 0;
 	long sleep = min(time_to_die, time_to_slee);
-	
-		usleep(sleep);
+	usleep(sleep);
 	if(philo->input->time_to_die > (philo->input->time_to_eat + philo->input->time_to_sleep))
 		printf("Sleep for %d\n", philo->input->time_to_sleep);
 	else
