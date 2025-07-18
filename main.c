@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:43 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/17 17:32:31 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/18 14:03:12 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int main(int argc, char **argv)
 		return (0);
 	//
 	init_input_struct(&input, argc, argv);
+	printf("Start time - %ld\n", input.start_time);
 	while(id < input.philosophers)
 	{
 		init_philo_struct(&philo[id], &input, id);
@@ -46,30 +47,35 @@ int main(int argc, char **argv)
 }
 
 void *pointer_func(void *data)//one pointer argument allowed by function signature
-{	
+{
+	int current_time;
+	
 	t_philo *philo = (t_philo *)data;
-	//usleep(start_time - current_time)//log calculetion start from poit start_time
-	while(1)
-	{
-		philo_take_fork();
-		philo_eat();
-		philo_sleep();
-		philo_think();
-		philo_die();
-		// pthread_mutex_lock(&philo[id]->input->forks[id]);
-		// pthread_mutex_unlock(&mutex);
-		printf("HELLO from threads - %d\n", philo->ph_id);
-	}
+	current_time = find_time();
+	if (current_time < philo->input->start_time)
+		usleep((philo->input->start_time - current_time) * 1000);
+	// while(1)
+	// {
+	printf("HELLO, from %d thread: c_t %ld\n", philo->ph_id, find_time());
+		
+	philo_take_fork(*philo);// pthread_mutex_lock(&philo[id]->input->forks[id]);
+	philo_eat(philo);
+	philo_put_fork(*philo);// c;
+		
+	philo_sleep(philo);
+	philo_think(philo);
+		// philo_die(philo);
+		
+	
+	// }
 	return (philo);
 }
 
-//identify currect time when the thread starts
-
-void print_log(int start_time, int id, char *str)//posibly add arg for time
-{
+// void print_log(int start_time, int id, char *str)//posibly add arg for time
+// {
 	
 
-}
+// }
 // timestamp_in_ms X has taken a fork
 // timestamp_in_ms X is eating
 // timestamp_in_ms X is sleeping
