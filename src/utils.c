@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 15:19:03 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/18 11:56:43 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/21 15:58:15 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int	check_input (int argc, char **str)
 	return (1);
 }
 
-
 long find_time(void)
 {
 	struct timeval	ct;
@@ -103,8 +102,6 @@ long find_time(void)
 	gettimeofday(&ct, NULL);
 	return ((ct.tv_sec * 1000) + (ct.tv_usec / 1000));
 }
-
-
 
 // memset, printf, malloc, free, write,
 // usleep, 

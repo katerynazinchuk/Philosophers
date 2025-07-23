@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:39:07 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/18 12:13:07 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:38:39 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ int	init_input_struct(t_input *input, int argc, char **argv)
 	if (argc == 6)
 		input->number_of_meals = ft_atoi(argv[5]);
 	else
-		input->number_of_meals = -1; //????
-	while(i < input->philosophers)
+		input->number_of_meals = -1;// to enter the condition compering data with zero
+	input->start_time = find_time() + 200;
+	input->is_dead = 0;
+	while (i < input->philosophers)
 	{
-		if(pthread_mutex_init(&input->forks[i], NULL))
+		if (pthread_mutex_init(&input->forks[i], NULL))
 		{
 			while(--i >= 0)
 			{
@@ -37,7 +39,8 @@ int	init_input_struct(t_input *input, int argc, char **argv)
 		}
 		i++;
 	}
-	input->start_time = find_time() + 200;
+	if (pthread_mutex_init(&input->death_lock, NULL))
+		return (-1);// add error
 	return (0);
 }
 
@@ -52,19 +55,25 @@ void	destroy_input_struct(t_input *input)
 		pthread_mutex_destroy(&input->forks[i]);
 		i++;
 	}
+	pthread_mutex_destroy(&input->death_lock);
 }
 
 void	init_philo_struct(t_philo *philo, t_input *input, int id)
 {
+	int	i;
+
 	philo->t_id = 0;
 	philo->ph_id = id;
 	philo->input = input;
 	philo->left_fork = &input->forks[id];
 	philo->right_fork = &input->forks[(id + 1) % input->philosophers];
+	if(pthread_mutex_init(&philo->meal_lock, NULL))
+		return (-1);
+	philo->t_last_meal =  0;
 	philo->meals_finished = 0;
 }
 
-// void destroy_philo_struct(t_philo *philo)
-// {
-	
-// }
+void destroy_philo_struct(t_philo *philo)
+{
+	pthread_mutex_destroy(&philo->meal_lock);	
+}

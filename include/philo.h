@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:40 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/18 14:03:44 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/23 17:33:42 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,16 @@
 
 typedef struct s_input
 {
-	int	philosophers;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	number_of_meals;
-	long start_time;
-	pthread_mutex_t forks[200]; // array of mutexes for forks
+	// pthread_t monitor_thread;
+	int				philosophers;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				number_of_meals;
+	long 			start_time;
+	int				is_dead;
+	pthread_mutex_t forks[200];
+	pthread_mutex_t	death_lock;
 
 }	t_input;
 
@@ -38,6 +41,8 @@ typedef struct s_philo
 	t_input			*input;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	meal_lock;
+	long			t_last_meal;
 	int				meals_finished;
 }	t_philo;
 	
@@ -46,10 +51,12 @@ int		init_input_struct(t_input *input, int argc, char **argv);
 void	init_philo_struct(t_philo *philo, t_input *input, int id);
 int		ft_atoi(const char *str);
 long	find_time(void);
-void 	*pointer_func(void *data);
-void	philo_take_fork(philo);
+void 	*philo_life(void *data);
+void	*monitor_function(void *data);
+void	print_log(t_philo *philo, char *str);
+void	philo_take_fork(t_philo *philo);
 void	philo_eat(t_philo *philo);
-void	philo_put_fork(philo);
+void	philo_put_fork(t_philo *philo);
 void	philo_sleep(t_philo *philo);
 void	philo_think(t_philo *philo);
 
