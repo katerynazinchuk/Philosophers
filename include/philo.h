@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:40 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/23 17:33:42 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:57:21 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,12 @@ long	find_time(void);
 void 	*philo_life(void *data);
 void	*monitor_function(void *data);
 void	print_log(t_philo *philo, char *str);
-void	philo_take_fork(t_philo *philo);
+int		philo_take_fork(t_philo *philo);
 void	philo_eat(t_philo *philo);
 void	philo_put_fork(t_philo *philo);
 void	philo_sleep(t_philo *philo);
-void	philo_think(t_philo *philo);
+void	philo_think(t_philo *philo, int a);
+int		check_for_death(t_philo *philo);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:39:07 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/23 15:38:39 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/24 15:41:15 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	destroy_input_struct(t_input *input)
 
 void	init_philo_struct(t_philo *philo, t_input *input, int id)
 {
-	int	i;
+	// int	i;
 
 	philo->t_id = 0;
 	philo->ph_id = id;
@@ -68,8 +68,8 @@ void	init_philo_struct(t_philo *philo, t_input *input, int id)
 	philo->left_fork = &input->forks[id];
 	philo->right_fork = &input->forks[(id + 1) % input->philosophers];
 	if(pthread_mutex_init(&philo->meal_lock, NULL))
-		return (-1);
-	philo->t_last_meal =  0;
+		return ;
+	philo->t_last_meal = input->start_time;
 	philo->meals_finished = 0;
 }
 
