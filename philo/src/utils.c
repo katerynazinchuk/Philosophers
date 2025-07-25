@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 15:19:03 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/21 15:58:15 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:50:07 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int	check_input (int argc, char **str)
 			j++;
 		}
 		a = ft_atoi(str[i]);
-		if (i == 1 && a > 200 && a > 0)
+		if (i == 1 && (a > 200 || a <= 0))
 		{
-			printf("Number of philosophers should be less then 200\n");// not sure is this valid condition
+			printf("Number of philosophers should be between 1 and 200\n");
 			return (0);
 		}
 		i++;

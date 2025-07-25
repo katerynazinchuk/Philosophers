@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:40 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/24 15:57:21 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/25 17:43:45 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct s_input
 	int				is_dead;
 	pthread_mutex_t forks[200];
 	pthread_mutex_t	death_lock;
+	pthread_mutex_t	print_lock;
+
 
 }	t_input;
 
@@ -48,7 +50,9 @@ typedef struct s_philo
 	
 int		check_input(int argc, char **str);
 int		init_input_struct(t_input *input, int argc, char **argv);
+void	destroy_input_struct(t_input *input);
 void	init_philo_struct(t_philo *philo, t_input *input, int id);
+void	destroy_philo_struct(t_philo *philo);
 int		ft_atoi(const char *str);
 long	find_time(void);
 void 	*philo_life(void *data);
@@ -58,7 +62,7 @@ int		philo_take_fork(t_philo *philo);
 void	philo_eat(t_philo *philo);
 void	philo_put_fork(t_philo *philo);
 void	philo_sleep(t_philo *philo);
-void	philo_think(t_philo *philo, int a);
+void	philo_think(t_philo *philo);
 int		check_for_death(t_philo *philo);
 
 
