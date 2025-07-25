@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 15:19:03 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/25 17:50:07 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/25 18:46:16 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_atoi(const char *str)
     while (str[i] >= '0' && str[i] <= '9')
     {
         number = number * 10 + (str[i] - '0');
-		if (number * sign > INT_MAX)// to check the owerflows
+		if (number * sign > INT_MAX)
 			return (INT_MAX);
 		if(number *sign < INT_MIN)
 			return (INT_MIN);
@@ -70,14 +70,14 @@ int	check_input (int argc, char **str)
 	int	a;
 
 	i = 1;
-	if(number_of_arg(argc))
+	if (number_of_arg(argc))
 		return (0);
-	while(str[i])
+	while (str[i])
 	{
 		j = 0;
-		while(str[i][j])
+		while (str[i][j])
 		{
-			if(!ft_isdigit(str[i][j]))
+			if (!ft_isdigit(str[i][j]))
 			{
 				printf("Numeric input required\n");
 				return (0);
@@ -134,3 +134,9 @@ long find_time(void)
 
 // even number take first left
 // unever take first right
+
+
+
+//each state of the automat is a function.
+//while loop is the engine for the states.
+// each function return the state wich next function absorb.

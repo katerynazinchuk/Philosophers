@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:43 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/25 18:14:22 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/25 18:46:33 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,11 @@ void *monitor_function(void *data)
 	
 	current_time = find_time();
 	if (current_time < input->start_time)
-	{
 		usleep((input->start_time - current_time) * 1000);
-		// printf("Monitor time - %ld\n", find_time());
-	}
-	while(1)
+	while (1)
 	{
 		i = 0;
-		while(i < input->philosophers)
+		while (i < input->philosophers)
 		{
 			pthread_mutex_lock(&philos[i].meal_lock);
 			time_dif =  find_time() - philos[i].t_last_meal;
@@ -108,7 +105,7 @@ void *monitor_function(void *data)
 	return NULL;
 }
 
-void *philo_life(void *data)//one pointer argument allowed by function signature
+void *philo_life(void *data)	
 {
 	int current_time;
 	
@@ -116,29 +113,29 @@ void *philo_life(void *data)//one pointer argument allowed by function signature
 	current_time = find_time();
 	if (current_time < philo->input->start_time)
 		usleep((philo->input->start_time - current_time) * 1000);
-	if(philo->ph_id % 2 == 1)
+	if (philo->ph_id % 2 == 1)
 		philo_think(philo);
-	while(1)
+	while (1)
 	{
-		if(check_for_death(philo))
-				return (NULL);
-		if(philo->input->number_of_meals > 0 && philo->meals_finished == philo->input->number_of_meals)
+		if (check_for_death(philo))
+			return (NULL);
+		if (philo->input->number_of_meals > 0 && philo->meals_finished == philo->input->number_of_meals)
 			return (NULL);
 		if (philo_take_fork(philo))
-				return NULL;
+			return (NULL);
 		philo_eat(philo);
 		philo_put_fork(philo);
-		if(check_for_death(philo))
+		if (check_for_death(philo))
 			return (NULL);
 		philo_sleep(philo);
-		if(check_for_death(philo))
+		if (check_for_death(philo))
 			return (NULL);
 		philo_think(philo);
 	}
 	return (NULL);
 }
 
-void print_log(t_philo *philo, char *str)//posibly add arg for time
+void print_log(t_philo *philo, char *str)
 {
 	long	timestamp;
 
@@ -151,17 +148,12 @@ void print_log(t_philo *philo, char *str)//posibly add arg for time
 	pthread_mutex_unlock(&philo->input->print_lock);
 }
 
-
-//each state of the automat is a function.
-//while loop is the engine for the states.
-// each function return the state wich next function absorb.
-
 int check_for_death(t_philo *philo)
 {
-	int i;
+	int	i;
 
 	pthread_mutex_lock(&philo->input->death_lock);
 	i = philo->input->is_dead;
 	pthread_mutex_unlock(&philo->input->death_lock);
-	return(i);
+	return (i);
 }
