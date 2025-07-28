@@ -6,16 +6,33 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:39:07 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/25 18:43:40 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/28 12:54:16 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+static int	init_forks(t_input *input)
+{
+	int	i;
+
+	i = 0;
+	while (i < input->philosophers)
+	{
+		if (pthread_mutex_init(&input->forks[i], NULL))
+		{
+			destroy_forks(input, i);
+			return (-1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	init_input_struct(t_input *input, int argc, char **argv)
 {
 	int	i;
-	
+
 	i = 0;
 	input->philosophers = ft_atoi(argv[1]);
 	input->time_to_die = ft_atoi(argv[2]);
@@ -27,39 +44,13 @@ int	init_input_struct(t_input *input, int argc, char **argv)
 		input->number_of_meals = -1;
 	input->start_time = find_time() + 1000;
 	input->is_dead = 0;
-	while (i < input->philosophers)
-	{
-		if (pthread_mutex_init(&input->forks[i], NULL))
-		{
-			while(--i >= 0)
-			{
-				pthread_mutex_destroy(&input->forks[i]);
-			}
-			return (-1);
-		}
-		i++;
-	}
+	if (init_forks(input) == -1)
+		return (-1);
 	if (pthread_mutex_init(&input->print_lock, NULL))
 		return (-1);
 	if (pthread_mutex_init(&input->death_lock, NULL))
 		return (-1);
 	return (0);
-}
-
-
-void	destroy_input_struct(t_input *input)
-{
-	int	i;
-	
-	i = 0;
-	while (i < input->philosophers)
-	{
-		pthread_mutex_destroy(&input->forks[i]);
-		i++;
-	}
-	pthread_mutex_destroy(&input->death_lock);
-	pthread_mutex_destroy(&input->print_lock);	
-
 }
 
 void	init_philo_struct(t_philo *philo, t_input *input, int id)
@@ -73,9 +64,4 @@ void	init_philo_struct(t_philo *philo, t_input *input, int id)
 		return ;
 	philo->t_last_meal = input->start_time;
 	philo->meals_finished = 0;
-}
-
-void destroy_philo_struct(t_philo *philo)
-{
-	pthread_mutex_destroy(&philo->meal_lock);	
 }

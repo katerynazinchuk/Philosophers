@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:40 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/25 17:43:45 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/28 16:28:38 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,11 @@ typedef struct s_input
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_meals;
-	long 			start_time;
+	long			start_time;
 	int				is_dead;
-	pthread_mutex_t forks[200];
+	pthread_mutex_t	forks[200];
 	pthread_mutex_t	death_lock;
 	pthread_mutex_t	print_lock;
-
-
 }	t_input;
 
 typedef struct s_philo
@@ -47,16 +45,18 @@ typedef struct s_philo
 	long			t_last_meal;
 	int				meals_finished;
 }	t_philo;
-	
+
+int		ft_isdigit(int c);
 int		check_input(int argc, char **str);
 int		init_input_struct(t_input *input, int argc, char **argv);
 void	destroy_input_struct(t_input *input);
 void	init_philo_struct(t_philo *philo, t_input *input, int id);
+void	destroy_forks(t_input *input, int count);
 void	destroy_philo_struct(t_philo *philo);
 int		ft_atoi(const char *str);
 long	find_time(void);
-void 	*philo_life(void *data);
-void	*monitor_function(void *data);
+void	*philo_life(void *data);
+void	*monitoring(void *data);
 void	print_log(t_philo *philo, char *str);
 int		philo_take_fork(t_philo *philo);
 void	philo_eat(t_philo *philo);
@@ -64,6 +64,6 @@ void	philo_put_fork(t_philo *philo);
 void	philo_sleep(t_philo *philo);
 void	philo_think(t_philo *philo);
 int		check_for_death(t_philo *philo);
-
+void	wait_for_start(t_input *input);
 
 #endif

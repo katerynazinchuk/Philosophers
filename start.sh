@@ -31,7 +31,7 @@ error_log ()
 
 test_one ()
 {
-    ("$2/$1/$1" 4 310 200 100 > "./log_$1")&
+    ("$2/$1" 4 310 200 100 > "./log_$1")&
     sleep 5
     pkill $1
     output=$(grep died -m 1 "./log_$1" | awk '{print $NF}')
@@ -47,7 +47,7 @@ test_one ()
 test_two ()
 {
     echo "\e[94m[+] Test #2: Executing your program for 60 second, please wait...\e[0m"
-    ("$2/$1/$1" 4 410 200 200 > /dev/null)&
+    ("$2/$1" 4 410 200 200 > /dev/null)&
     i=1
     error=0
     while [ $i -lt 60 ];do
@@ -72,7 +72,7 @@ test_two ()
 test_three ()
 {
     echo "\e[94m[+] Test #3: Executing your program for 60 second, please wait...\e[0m"
-    ("$2/$1/$1" 5 800 200 200 > /dev/null)&
+    ("$2/$1" 5 800 200 200 > /dev/null)&
     i=1
     error=0
     while [ $i -lt 60 ];do
@@ -96,7 +96,7 @@ test_three ()
 
 test_four ()
 {
-    ("$2/$1/$1" 4 410 200 200 $3 > "./log_$1")&
+    ("$2/$1" 4 410 200 200 $3 > "./log_$1")&
     sleep 10
     pgrep $1 > /dev/null
     if [ "$?" -eq 1 ];then
@@ -122,7 +122,7 @@ test_five ()
     t=0
     error=0
     while [ $i -le 10 ];do
-        ("$2/$1/$1" 2 60 60 60 > "./log_$1")&
+        ("$2/$1" 2 60 60 60 > "./log_$1")&
         sleep 2
         pgrep $1 > /dev/null
         if [ "$?" -eq 1 ];then
@@ -156,7 +156,7 @@ test_five ()
 
 test_six ()
 {
-    ("$2/$1/$1" 10 410 200 200 > /dev/null)&
+    ("$2/$1" 10 410 200 200 > /dev/null)&
     sleep 2
     forks=$(pgrep $1 | wc -l)
     if [ "$forks" -eq 11 ];then
@@ -173,7 +173,7 @@ if [ "$2" -eq 1 -o "$2" -eq 0 ];then
     echo "[============[Testing philo]==============]\n"
 
     target="philo"
-    make -C "$1/$target" > /dev/null
+    make -C "$1" > /dev/null #comment
 
     if [ "$?" -ne 0 ];then
         echo "\n[+] There's a problem while compiling $target, please recheck your inputs"

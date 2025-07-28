@@ -1,57 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
+/*   life.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:47 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/25 18:42:48 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/28 15:54:54 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	philo_take_fork(t_philo *philo)
-{
-	if(philo->ph_id % 2 == 1)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		if (check_for_death(philo))
-		{
-			pthread_mutex_unlock(philo->left_fork);
-			return (1);
-		}
-		print_log(philo, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		if (check_for_death(philo))
-		{
-			pthread_mutex_unlock(philo->left_fork);
-			pthread_mutex_unlock(philo->right_fork);
-			return (1);
-		}
-		print_log(philo, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		if (check_for_death(philo))
-		{
-			pthread_mutex_unlock(philo->right_fork);
-			return (1);
-		}
-		print_log(philo, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
-		if (check_for_death(philo))
-		{
-			pthread_mutex_unlock(philo->left_fork);
-			pthread_mutex_unlock(philo->right_fork);
-			return (1);
-		}
-		print_log(philo, "has taken a fork");
-	}
-	return (0);
-}
 
 void	philo_eat(t_philo *philo)
 {
@@ -61,20 +20,6 @@ void	philo_eat(t_philo *philo)
 	print_log(philo, "is eating");
 	usleep((philo->input->time_to_eat * 1000));
 	philo->meals_finished++;
-}
-
-void	philo_put_fork(t_philo *philo)
-{
-	if (philo->ph_id % 2 == 1)
-	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
-	}
 }
 
 void	philo_sleep(t_philo *philo)
@@ -98,3 +43,31 @@ void	philo_think(t_philo *philo)
 		usleep(time_left / 2 * 1000);
 }
 
+void	*philo_life(void *data)
+{
+	t_philo		*philo;
+
+	philo = (t_philo *)data;
+	wait_for_start(philo->input);
+	if (philo->ph_id % 2 == 1)
+		philo_think(philo);
+	while (1)
+	{
+		if (check_for_death(philo))
+			return (NULL);
+		if (philo->input->number_of_meals > 0 && \
+philo->meals_finished == philo->input->number_of_meals)
+			return (NULL);
+		if (philo_take_fork(philo))
+			return (NULL);
+		philo_eat(philo);
+		philo_put_fork(philo);
+		if (check_for_death(philo))
+			return (NULL);
+		philo_sleep(philo);
+		if (check_for_death(philo))
+			return (NULL);
+		philo_think(philo);
+	}
+	return (NULL);
+}

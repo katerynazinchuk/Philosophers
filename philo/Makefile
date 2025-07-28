@@ -7,7 +7,7 @@ SRC_DIR := src
 BUILD_DIR := obj
 INCLUDE := include
 
-SRC := main.c src/utils.c src/threads.c src/init_structs.c
+SRC := main.c src/utils.c src/life.c src/init_structs.c src/check_input.c src/destroy_struct.c src/forks.c src/monitoring_thread.c
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 all: $(NAME)
