@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:47 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/28 15:54:54 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/29 16:23:37 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,15 @@ void	philo_think(t_philo *philo)
 	current_time = find_time();
 	time_left = philo->input->time_to_die - (current_time - philo->t_last_meal);
 	if (time_left > 0)
-		usleep(time_left / 2 * 1000);
+	{
+		if (philo->input->philosophers % 2 == 1 && \
+		(philo->input->time_to_die - (philo->input->time_to_eat * 3)) <= 100)
+		{
+			usleep(time_left / 3 * 1000);
+		}
+		else
+			usleep(time_left / 2 * 1000);
+	}
 }
 
 void	*philo_life(void *data)
