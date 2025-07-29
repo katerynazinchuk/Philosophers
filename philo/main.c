@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:43 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/28 16:13:24 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:35:11 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,18 @@ static int	start_philo_threads(t_philo *philo)
 	return (0);
 }
 
-static void	init_all_philo(t_philo *philo, t_input *input)
+static int	init_all_philo(t_philo *philo, t_input *input)
 {
 	int	id;
 
 	id = 0;
 	while (id < input->philosophers)
 	{
-		init_philo_struct(&philo[id], input, id);
+		if (init_philo_struct(&philo[id], input, id) == -1)
+			return (1);
 		id++;
 	}
+	return (0);
 }
 
 static int	join_philo_threads(t_philo *philo)
@@ -74,7 +76,8 @@ int	main(int argc, char **argv)
 		return (1);
 	if (input.philosophers == 1)
 		return (single_philo(&input));
-	init_all_philo(philo, &input);
+	if (init_all_philo(philo, &input))
+		return (1);
 	if (start_philo_threads(philo))
 		return (1);
 	if (pthread_create(&monitor_thread, NULL, &monitoring, philo))
@@ -84,5 +87,6 @@ int	main(int argc, char **argv)
 	if (join_philo_threads(philo))
 		return (2);
 	destroy_input_struct(&input);
+	destroy_philo_struct(philo);
 	return (0);
 }

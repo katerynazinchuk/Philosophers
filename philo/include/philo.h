@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:40 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/28 16:28:38 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:30:41 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		ft_isdigit(int c);
 int		check_input(int argc, char **str);
 int		init_input_struct(t_input *input, int argc, char **argv);
 void	destroy_input_struct(t_input *input);
-void	init_philo_struct(t_philo *philo, t_input *input, int id);
+int		init_philo_struct(t_philo *philo, t_input *input, int id);
 void	destroy_forks(t_input *input, int count);
 void	destroy_philo_struct(t_philo *philo);
 int		ft_atoi(const char *str);
