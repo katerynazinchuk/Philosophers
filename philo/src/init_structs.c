@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:39:07 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/29 17:29:24 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:39:28 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	init_forks(t_input *input)
 		if (pthread_mutex_init(&input->forks[i], NULL))
 		{
 			destroy_forks(input, i);
-			return (-1);
+			return (1);
 		}
 		i++;
 	}
@@ -44,12 +44,12 @@ int	init_input_struct(t_input *input, int argc, char **argv)
 		input->number_of_meals = -1;
 	input->start_time = find_time() + 1000;
 	input->is_dead = 0;
-	if (init_forks(input) == -1)
-		return (-1);
+	if (init_forks(input))
+		return (1);
 	if (pthread_mutex_init(&input->print_lock, NULL))
-		return (-1);
+		return (1);
 	if (pthread_mutex_init(&input->death_lock, NULL))
-		return (-1);
+		return (1);
 	return (0);
 }
 
@@ -61,7 +61,7 @@ int	init_philo_struct(t_philo *philo, t_input *input, int id)
 	philo->left_fork = &input->forks[id];
 	philo->right_fork = &input->forks[(id + 1) % input->philosophers];
 	if (pthread_mutex_init(&philo->meal_lock, NULL))
-		return (-1);
+		return (1);
 	philo->t_last_meal = input->start_time;
 	philo->meals_finished = 0;
 	return (0);

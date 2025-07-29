@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:43 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/29 17:37:06 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:39:02 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	init_all_philo(t_philo *philo, t_input *input)
 	id = 0;
 	while (id < input->philosophers)
 	{
-		if (init_philo_struct(&philo[id], input, id) == -1)
+		if (init_philo_struct(&philo[id], input, id))
 			return (1);
 		id++;
 	}
