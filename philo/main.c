@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:43 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/29 17:35:11 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/07/29 17:37:06 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char **argv)
 	pthread_t	monitor_thread;
 
 	if (!check_input(argc, argv))
-		return (0);
+		return (1);
 	if (init_input_struct(&input, argc, argv))
 		return (1);
 	if (input.philosophers == 1)
