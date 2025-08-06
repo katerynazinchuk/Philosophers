@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:41:36 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/28 16:17:25 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:56:08 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	number_of_arg(int argc)
 {
 	if (argc < 5)
 	{
-		printf("Pleae provide a full list of required arguments\n");
+		printf("Please provide a full list of required arguments\n");
 		return (1);
 	}
 	if (argc > 6)

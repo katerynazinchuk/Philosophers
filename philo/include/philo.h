@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:40 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/29 17:30:41 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:06:17 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 
 typedef struct s_input
 {
-	// pthread_t monitor_thread;
+	pthread_mutex_t monitor_thread;
+	int				monitor_end;
 	int				philosophers;
 	int				time_to_die;
 	int				time_to_eat;
@@ -52,7 +53,7 @@ int		init_input_struct(t_input *input, int argc, char **argv);
 void	destroy_input_struct(t_input *input);
 int		init_philo_struct(t_philo *philo, t_input *input, int id);
 void	destroy_forks(t_input *input, int count);
-void	destroy_philo_struct(t_philo *philo);
+void	destroy_philos_struct(t_philo *philo, int count);
 int		ft_atoi(const char *str);
 long	find_time(void);
 void	*philo_life(void *data);

@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:47 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/29 16:23:37 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:44:19 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	philo_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->meal_lock);
 	print_log(philo, "is eating");
 	usleep((philo->input->time_to_eat * 1000));
+	pthread_mutex_lock(&philo->meal_lock);
 	philo->meals_finished++;
+	pthread_mutex_unlock(&philo->meal_lock);
+
 }
 
 void	philo_sleep(t_philo *philo)

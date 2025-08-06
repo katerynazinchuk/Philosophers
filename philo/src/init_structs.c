@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 16:39:07 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/29 17:39:28 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:07:06 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	init_input_struct(t_input *input, int argc, char **argv)
 	int	i;
 
 	i = 0;
+	input->monitor_end = 0;
 	input->philosophers = ft_atoi(argv[1]);
 	input->time_to_die = ft_atoi(argv[2]);
 	input->time_to_eat = ft_atoi(argv[3]);
@@ -49,6 +50,8 @@ int	init_input_struct(t_input *input, int argc, char **argv)
 	if (pthread_mutex_init(&input->print_lock, NULL))
 		return (1);
 	if (pthread_mutex_init(&input->death_lock, NULL))
+		return (1);
+	if (pthread_mutex_init(&input->monitor_thread, NULL))
 		return (1);
 	return (0);
 }

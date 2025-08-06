@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/09 14:25:43 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/29 17:39:02 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:06:43 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,12 @@ static int	join_philo_threads(t_philo *philo)
 	{
 		if (pthread_join(philo[id].t_id, NULL))
 			return (2);
-		destroy_philo_struct(&philo[id]);
+		// destroy_philo_struct(&philo[id]);
 		id++;
 	}
 	return (0);
 }
+//
 
 int	main(int argc, char **argv)
 {
@@ -82,11 +83,14 @@ int	main(int argc, char **argv)
 		return (1);
 	if (pthread_create(&monitor_thread, NULL, &monitoring, philo))
 		return (1);
-	if (pthread_detach(monitor_thread))
-		return (2);
 	if (join_philo_threads(philo))
 		return (2);
+	pthread_mutex_lock(&philo->input->monitor_thread);
+	philo->input->monitor_end = 1;
+	pthread_mutex_unlock(&philo->input->monitor_thread);
+	if (pthread_join(monitor_thread, NULL))
+		return (2);
+	destroy_philos_struct(philo, input.philosophers);
 	destroy_input_struct(&input);
-	destroy_philo_struct(philo);
 	return (0);
 }

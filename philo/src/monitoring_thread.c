@@ -6,7 +6,7 @@
 /*   By: kzinchuk <kzinchuk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:14:47 by kzinchuk          #+#    #+#             */
-/*   Updated: 2025/07/28 16:03:11 by kzinchuk         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:15:21 by kzinchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ void	*monitoring(void *data)
 	wait_for_start(philos->input);
 	while (1)
 	{
+		pthread_mutex_lock(&philos->meal_lock);
+		if(philos->input->monitor_end == 1)
+		{
+			pthread_mutex_unlock(&philos->meal_lock);
+			return NULL;
+		}
+		pthread_mutex_unlock(&philos->meal_lock);
 		i = 0;
 		while (i < philos[0].input->philosophers)
 		{
